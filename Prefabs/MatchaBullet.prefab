@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1144813989279321407}
   - component: {fileID: 6384958007165348452}
   m_Layer: 0
-  m_Name: matcha_ball
+  m_Name: MatchaBullet
   m_TagString: MatchaBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

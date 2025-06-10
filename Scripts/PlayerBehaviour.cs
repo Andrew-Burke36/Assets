@@ -17,14 +17,23 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI scoreText;
 
+    [SerializeField]
+    public GameObject doorOverlay;
+
+    [SerializeField]
+    public GameObject collectableOverlay;
+
     float interactDistance = 2.5f;
 
+    MatchaBallBehaviour currentMatchaBall;
     CoinBehaviour currentCoin;
     DoorBehaviour currentDoor;
     
     int currentScore = 0;
     
     bool canInteract = false;
+
+    private float lifetime = 2f;
 
 
     void OnInteract() {
@@ -33,7 +42,6 @@ public class PlayerBehaviour : MonoBehaviour
             if (currentCoin != null) {
                 Debug.Log("Collecting..");
                 currentCoin.CollectCoin(this);
-                Debug.Log("Score: " + currentScore);
                 canInteract = false;
                 currentCoin = null;
             }
@@ -42,20 +50,26 @@ public class PlayerBehaviour : MonoBehaviour
                 Debug.Log("Player is interacting with the door");
                 currentDoor.Toggle();   
             }
+
+            else if (currentMatchaBall != null )
+            {
+                Debug.Log("Player is interacting with the matcha ball");
+                currentMatchaBall.CollectMatcha(this);
+                canInteract = false;
+                currentMatchaBall = null;
+            }
         }
     }
 
     public void ModifyScore(int amount)
     {
         currentScore += amount;
-        scoreText.text = "SCORE: " + currentScore.ToString();
+        scoreText.text = "COLLECTIBLES: " + currentScore.ToString() + "/20";
 
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void OnFire()
     {
-        Debug.Log("Fire");
         GameObject newProjectile = Instantiate(projectile, spawnPoint.position, spawnPoint.rotation);
 
         // For the fire force of the bullet stuff
@@ -63,47 +77,69 @@ public class PlayerBehaviour : MonoBehaviour
 
         // Get the rigidbody of the projectile and apply the force onto it
         newProjectile.GetComponent<Rigidbody>().AddForce(FireForce);
+
+        Destroy(newProjectile, lifetime);
     }
+
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        scoreText.text = "SCORE: " + currentScore.ToString();
+        scoreText.text = "COLLECTIBLES: " + currentScore.ToString() + "/20";
+
+        // Sets the door and collectable overlay to inactive at the start of the game
+        doorOverlay.SetActive(false);
+        collectableOverlay.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
         RaycastHit hitInfo;
-        Debug.DrawRay(spawnPoint.position, spawnPoint.forward * interactDistance, Color.red);
+        // Draws the ray
+        Debug.DrawRay(transform.position, transform.forward * interactDistance, Color.red);
 
-        if (Physics.Raycast(spawnPoint.position, spawnPoint.forward, out hitInfo, interactDistance))
+        // Checks if the player's raycast hits something and stores the information
+        bool hitSomething = Physics.Raycast(transform.position, transform.forward, out hitInfo, interactDistance);
+
+        // Resets pre-existing stuff
+        canInteract = false;
+
+        // Disable any overlays or highlights
+
+        if (currentCoin != null)
         {
-            if (hitInfo.collider.gameObject.CompareTag("Coin"))
-            {
-                if (currentCoin != null)
-                {
-                    // If the current coin is not null, unhighlight it
-                    currentCoin.Unhighlight();
-                }
-
-                canInteract = true;
-                currentCoin = hitInfo.collider.gameObject.GetComponent<CoinBehaviour>();
-                currentCoin.Highlight();
-            }
-
-            else if (hitInfo.collider.gameObject.CompareTag("KeycardDoor"))
-            {
-                canInteract = true;
-                currentDoor = hitInfo.collider.gameObject.GetComponent<DoorBehaviour>();
-            }
-        }
-
-        else if (currentCoin != null)
-        {
-            // If the raycast does not hit a coin, unhighlight the current coin
             currentCoin.Unhighlight();
             currentCoin = null;
         }
+
+        if (currentMatchaBall != null)
+        {
+            currentMatchaBall.Unhighlight();
+            currentMatchaBall = null;
+        }  
+
+        if (currentDoor != null)
+        {
+            currentDoor = null;
+        }
+        
+        collectableOverlay.SetActive(false);
+        doorOverlay.SetActive(false);
+
+        if (hitSomething)
+        {
+            GameObject hitObj = hitInfo.collider.gameObject;
+
+            if ( hitObj.CompareTag('Coin'))
+            {
+                currentCoin.GetComponent<CoinBehaviour>();
+
+
+            }
+        }
+
     }
-
-
 }
+
+

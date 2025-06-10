@@ -6,7 +6,7 @@ public class GiftBoxBehaviour : MonoBehaviour
     GameObject gift;
 
     [SerializeField]
-    Transform spawnPoint;   
+    Transform spawnPoint;
 
     void OnCollisionEnter(Collision collision)
     {
@@ -18,7 +18,6 @@ public class GiftBoxBehaviour : MonoBehaviour
             Destroy(gameObject);
             GameObject bullet = collision.gameObject;
             Destroy(bullet);
-
         }
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
