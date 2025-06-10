@@ -17,11 +17,14 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI scoreText;
 
+    float interactDistance = 2.5f;
+
+    CoinBehaviour currentCoin;
+    DoorBehaviour currentDoor;
+    
     int currentScore = 0;
     
     bool canInteract = false;
-    CoinBehaviour currentCoin;
-    DoorBehaviour currentDoor;
 
 
     void OnInteract() {
@@ -42,36 +45,6 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("Player collided with: " + other.gameObject.name);
-        if (other.CompareTag("Coin"))
-        {
-            canInteract = true;
-            currentCoin = other.gameObject.GetComponent<CoinBehaviour>();
-            currentCoin.Highlight();
-        }
-        else if (other.CompareTag("KeycardDoor"))
-        {
-            canInteract = true;
-            currentDoor = other.gameObject.GetComponent<DoorBehaviour>();
-        }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        // Check if the player has detected a coin 
-        if (currentCoin != null)
-        {
-            // If the object that exited the trigger is the same as the current coin
-            if (other.gameObject == currentCoin.gameObject)
-            {
-                canInteract = false;
-                currentCoin.Unhighlight();
-                currentCoin = null;
-            }
-        }
-    }
     public void ModifyScore(int amount)
     {
         currentScore += amount;
@@ -99,7 +72,37 @@ public class PlayerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        RaycastHit hitInfo;
+        Debug.DrawRay(spawnPoint.position, spawnPoint.forward * interactDistance, Color.red);
+
+        if (Physics.Raycast(spawnPoint.position, spawnPoint.forward, out hitInfo, interactDistance))
+        {
+            if (hitInfo.collider.gameObject.CompareTag("Coin"))
+            {
+                if (currentCoin != null)
+                {
+                    // If the current coin is not null, unhighlight it
+                    currentCoin.Unhighlight();
+                }
+
+                canInteract = true;
+                currentCoin = hitInfo.collider.gameObject.GetComponent<CoinBehaviour>();
+                currentCoin.Highlight();
+            }
+
+            else if (hitInfo.collider.gameObject.CompareTag("KeycardDoor"))
+            {
+                canInteract = true;
+                currentDoor = hitInfo.collider.gameObject.GetComponent<DoorBehaviour>();
+            }
+        }
+
+        else if (currentCoin != null)
+        {
+            // If the raycast does not hit a coin, unhighlight the current coin
+            currentCoin.Unhighlight();
+            currentCoin = null;
+        }
     }
 
 

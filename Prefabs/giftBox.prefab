@@ -121,3 +121,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01ab44dd9505db7458950a35ffa44e64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gift: {fileID: 8112597760290332055, guid: b09eb9d6a236ced4eb9273da674ce88d, type: 3}
+  spawnPoint: {fileID: 7039568386809250586}
