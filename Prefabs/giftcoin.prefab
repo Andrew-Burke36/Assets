@@ -52,7 +52,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8112597760290332055}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 2
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
@@ -149,3 +149,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47dc715163a6f6f438d077d23e0b461c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coinCollectAudio: {fileID: 8300000, guid: 9adef5e84d207aa408a8bcee2f0fd8f0, type: 3}
+  highlightMat: {fileID: 2100000, guid: e5e208fa4de618b41840b866ede4663f, type: 2}
