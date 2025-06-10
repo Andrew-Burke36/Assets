@@ -4,12 +4,18 @@ public class DoorBehaviour : MonoBehaviour
 {   
     // Initial door variables
     private bool isOpen = false;
+    [SerializeField]
+    AudioSource doorAudioSource;
 
-    public void Toggle() {
-        if (!isOpen) {
+    public void Toggle()
+    {
+        if (!isOpen)
+        {
             Open();
+            doorAudioSource.Play();
         }
-        else {
+        else
+        {
             Close();
         }
     }
@@ -31,7 +37,8 @@ public class DoorBehaviour : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        doorAudioSource = GetComponent<AudioSource>();
+
     }
 
     // Update is called once per frame
