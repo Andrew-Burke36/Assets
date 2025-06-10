@@ -4,6 +4,14 @@ using UnityEngine.SocialPlatforms.Impl;
 public class PlayerBehaviour : MonoBehaviour
 {
     // Variables are here
+    [SerializeField]
+    GameObject projectile;
+
+    [SerializeField]
+    Transform spawnPoint;
+
+    [SerializeField]
+    float fireStrength = 100f;
 
     private int matchaHealth = 100;
     private int maxMatchaHealth = 100;
@@ -11,16 +19,24 @@ public class PlayerBehaviour : MonoBehaviour
     
     bool canInteract = false;
     CoinBehaviour currentCoin;
+    DoorBehaviour currentDoor;
+
 
     void OnInteract() {
         // Interact with the object
         if(canInteract) {
-            Debug.Log("Collecting..");
-            currentCoin.CollectCoin(this);
-            Debug.Log("Score: " + score);
-            canInteract = false;
-            currentCoin = null;
+            if (currentCoin != null) {
+                Debug.Log("Collecting..");
+                currentCoin.CollectCoin(this);
+                Debug.Log("Score: " + score);
+                canInteract = false;
+                currentCoin = null;
+            }
             
+            else if(currentDoor != null) {
+                Debug.Log("Player is interacting with the door");
+                currentDoor.Toggle();   
+            }
         }
     }
 
@@ -31,6 +47,12 @@ public class PlayerBehaviour : MonoBehaviour
             canInteract = true;
             currentCoin = other.gameObject.GetComponent<CoinBehaviour>();
         }
+        else if(other.CompareTag("KeycardDoor")) {
+            canInteract = true;
+            currentDoor = other.gameObject.GetComponent<DoorBehaviour>();
+        }
+
+
     }
     public void ModifyScore(int amount) {
         score += amount;
@@ -56,7 +78,7 @@ public class PlayerBehaviour : MonoBehaviour
     // void OnCollisionEnter(Collision collision) {
     //     if (collision.gameObject.CompareTag("matcha_boost")) {
     //         Debug.Log("player collided with a matcha boost object");
-            
+
     //         RecoveryBehaviour recover = collision.gameObject.GetComponent<RecoveryBehaviour>();
     //     }
     // }
@@ -65,13 +87,24 @@ public class PlayerBehaviour : MonoBehaviour
     //     if(matchaHealth < maxMatchaHealth) {
     //         matchaHealth += amount;
     //         if (matchaHealth > maxMatchaHealth) {
-                
+
     //             matchaHealth = maxMatchaHealth;
     //         }
     //     } 
     // }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void OnFire()
+    {
+        Debug.Log("Fire");
+        GameObject newProjectile = Instantiate(projectile, spawnPoint.position, spawnPoint.rotation);
+
+        // For the fire force of the bullet stuff
+        Vector3 FireForce = spawnPoint.forward * fireStrength;
+
+        // Get the rigidbody of the projectile and apply the force onto it
+        newProjectile.GetComponent<Rigidbody>().AddForce(FireForce);
+    }
     void Start()
     {
         
