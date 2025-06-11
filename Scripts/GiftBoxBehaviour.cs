@@ -12,7 +12,8 @@ public class GiftBoxBehaviour : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("MatchaBullet"))
         {
-            GameObject newGift = Instantiate(gift, spawnPoint.position, spawnPoint.rotation);
+            Quaternion OriginalPrefabRotation = gift.transform.rotation;
+            GameObject newGift = Instantiate(gift, spawnPoint.position, OriginalPrefabRotation);
 
             
             Destroy(gameObject);

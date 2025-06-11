@@ -3747,10 +3747,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 711887039}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0.000029564, y: -60.725}
-  m_SizeDelta: {x: 499.7919, y: 40.3722}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.001091, y: 0.0019722}
+  m_SizeDelta: {x: 466.0917, y: 121.45}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &437784244
 MonoBehaviour:
@@ -3772,7 +3772,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press E to open the door
+  m_text: Press E with a keycard to open the door
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3806,8 +3806,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -3837,7 +3837,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -4.544464, w: -8.773361}
+  m_margin: {x: 0, y: 0, z: -1.1052551, w: -0.09727478}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -16658,7 +16658,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 2007519950}
 --- !u!33 &652067790
@@ -17279,6 +17279,19 @@ MonoBehaviour:
   scoreText: {fileID: 1038115105}
   doorOverlay: {fileID: 711887038}
   collectableOverlay: {fileID: 1611441217}
+--- !u!114 &716185507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 716185491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9e10fac6c5ef8147ba719c595e17ef7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InventoryItems: 
 --- !u!43 &724860396
 Mesh:
   m_ObjectHideFlags: 0
@@ -18571,8 +18584,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 615, y: -406.29675}
-  m_SizeDelta: {x: 538.738, y: 93.6383}
+  m_AnchoredPosition: {x: 599.2849, y: -403.5653}
+  m_SizeDelta: {x: 570.168, y: 99.1012}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1038115103
 GameObject:
@@ -18608,8 +18621,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -30.415, y: 0.00035}
-  m_SizeDelta: {x: 501.9104, y: 93.639}
+  m_AnchoredPosition: {x: -33.432, y: -0.00000095216}
+  m_SizeDelta: {x: 570.17, y: 93.639}
   m_Pivot: {x: 0.45580238, y: 0.5}
 --- !u!114 &1038115105
 MonoBehaviour:
@@ -18631,7 +18644,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'COLLECTIBLES: 0/20'
+  m_text: 'COLLECTIBLES: 0 / 20'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -19029,6 +19042,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d72b4a1e375317144955225378e7c027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RequiredItem: 2
   doorAudioSource: {fileID: 0}
 --- !u!136 &1349002103
 CapsuleCollider:
@@ -24892,7 +24906,7 @@ Transform:
   m_GameObject: {fileID: 1463391220}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.36726463, z: -0, w: 0.93011653}
-  m_LocalPosition: {x: -4.39, y: 0.83, z: -10.17}
+  m_LocalPosition: {x: -6.45, y: 0.83, z: -9.69}
   m_LocalScale: {x: 0.8023474, y: 0.8023474, z: 0.8023474}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -25332,7 +25346,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000015259, y: 418.28812}
+  m_AnchoredPosition: {x: 0, y: 418.29}
   m_SizeDelta: {x: 450, y: 121.45}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1669574320
@@ -25532,6 +25546,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 453084650579209855, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 716185499}
+    - targetCorrespondingSourceObject: {fileID: 453084650579209855, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 716185507}
   m_SourcePrefab: {fileID: 100100000, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
 --- !u!43 &1705481569
 Mesh:
@@ -27128,6 +27145,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8966138937488192893, guid: d79850c6ab6c31a49a52a0e4bef0c349, type: 3}
+      propertyPath: gift
+      value: 
+      objectReference: {fileID: 7158354220051339008, guid: 7685c873030e3094dac7c9adca14cf35, type: 3}
     - target: {fileID: 3468831972975641973, guid: d79850c6ab6c31a49a52a0e4bef0c349, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9.81
@@ -27186,7 +27207,7 @@ PrefabInstance:
       objectReference: {fileID: 1705481569}
     - target: {fileID: 8888484885401089526, guid: d79850c6ab6c31a49a52a0e4bef0c349, type: 3}
       propertyPath: m_VersionIndex
-      value: 6258
+      value: 6261
       objectReference: {fileID: 0}
     - target: {fileID: 9092404378363687011, guid: d79850c6ab6c31a49a52a0e4bef0c349, type: 3}
       propertyPath: m_Mesh

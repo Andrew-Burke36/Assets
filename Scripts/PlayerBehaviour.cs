@@ -28,46 +28,63 @@ public class PlayerBehaviour : MonoBehaviour
     MatchaBallBehaviour currentMatchaBall;
     CoinBehaviour currentCoin;
     DoorBehaviour currentDoor;
-    
+    KeyBehaviour currentKey;
+
     int currentScore = 0;
-    
+
     bool canInteract = false;
 
     private float lifetime = 2f;
 
-
-    void OnInteract() {
+    void OnInteract()
+    {
         // Interact with the object
-        if(canInteract) {
-            if (currentCoin != null) {
+        if (canInteract)
+        {
+            // Interacting with coins in the game
+            if (currentCoin != null)
+            {
                 Debug.Log("Collecting..");
                 currentCoin.CollectCoin(this);
                 canInteract = false;
                 currentCoin = null;
             }
-            
-            else if(currentDoor != null) {
+
+            // Interacting with doors in the game
+            else if (currentDoor != null)
+            {
                 Debug.Log("Player is interacting with the door");
-                currentDoor.Toggle();   
+                currentDoor.Toggle();
             }
 
-            else if (currentMatchaBall != null )
+            // Interacting with the matcha ball in the game
+            else if (currentMatchaBall != null)
             {
                 Debug.Log("Player is interacting with the matcha ball");
                 currentMatchaBall.CollectMatcha(this);
                 canInteract = false;
                 currentMatchaBall = null;
             }
+
+            else if (currentKey != null)
+            {
+                Debug.Log("Player is interacting with the keycard");
+                currentKey.CollectKey(this);
+                canInteract = false;
+                currentKey = null;
+            }
         }
     }
 
+    // Modifys the player's score when they collect a collectable
     public void ModifyScore(int amount)
     {
         currentScore += amount;
-        scoreText.text = "COLLECTIBLES: " + currentScore.ToString() + "/20";
+        scoreText.text = "COLLECTIBLES: " + currentScore.ToString() + " / 20";
 
     }
 
+    // Allows the user to fire a projectile
     void OnFire()
     {
         GameObject newProjectile = Instantiate(projectile, spawnPoint.position, spawnPoint.rotation);
@@ -85,7 +102,7 @@ public class PlayerBehaviour : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        scoreText.text = "COLLECTIBLES: " + currentScore.ToString() + "/20";
+        scoreText.text = "COLLECTIBLES: " + currentScore.ToString() + " / 20";
 
         // Sets the door and collectable overlay to inactive at the start of the game
         doorOverlay.SetActive(false);
@@ -95,18 +112,16 @@ public class PlayerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Raycast function for efficient and high level player interactions.
         RaycastHit hitInfo;
-        // Draws the ray
-        Debug.DrawRay(transform.position, transform.forward * interactDistance, Color.red);
+        Debug.DrawRay(spawnPoint.position, spawnPoint.forward * interactDistance, Color.red);
 
-        // Checks if the player's raycast hits something and stores the information
-        bool hitSomething = Physics.Raycast(transform.position, transform.forward, out hitInfo, interactDistance);
+        bool hitSomething = Physics.Raycast(spawnPoint.position, spawnPoint.forward, out hitInfo, interactDistance);
 
-        // Resets pre-existing stuff
+        // Always reset
         canInteract = false;
 
-        // Disable any overlays or highlights
-
+        // Cleanup existing highlights and overlays
         if (currentCoin != null)
         {
             currentCoin.Unhighlight();
@@ -117,13 +132,18 @@ public class PlayerBehaviour : MonoBehaviour
         {
             currentMatchaBall.Unhighlight();
             currentMatchaBall = null;
-        }  
+        }
 
         if (currentDoor != null)
         {
             currentDoor = null;
         }
-        
+
+        if (currentKey != null)
+        {
+            currentKey = null;
+        }
+
         collectableOverlay.SetActive(false);
         doorOverlay.SetActive(false);
 
@@ -131,15 +151,51 @@ public class PlayerBehaviour : MonoBehaviour
         {
             GameObject hitObj = hitInfo.collider.gameObject;
 
-            if ( hitObj.CompareTag('Coin'))
+            if (hitObj.CompareTag("Coin"))
             {
-                currentCoin.GetComponent<CoinBehaviour>();
+                currentCoin = hitObj.GetComponent<CoinBehaviour>();
+                if (currentCoin != null)
+                {
+                    currentCoin.Highlight();
+                    collectableOverlay.SetActive(true);
+                    canInteract = true;
+                }
+            }
+            else if (hitObj.CompareTag("matcha"))
+            {
+                currentMatchaBall = hitObj.GetComponent<MatchaBallBehaviour>();
+                if (currentMatchaBall != null)
+                {
+                    currentMatchaBall.Highlight();
+                    collectableOverlay.SetActive(true);
+                    canInteract = true;
+                }
+            }
+            else if (hitObj.CompareTag("KeycardDoor"))
+            {
+                currentDoor = hitObj.GetComponent<DoorBehaviour>();
+                if (currentDoor != null)
+                {
+                    doorOverlay.SetActive(true);
+                    canInteract = true;
+                }
+            }
 
-
+            else
+            {
+                 if (hitObj.CompareTag("KeyCard"))
+                {
+                    currentKey = hitObj.GetComponent<KeyBehaviour>();
+                     if (currentKey != null)
+                     {
+                         collectableOverlay.SetActive(true);
+                         canInteract = true;
+                    }
+                }
             }
         }
-
     }
 }
+
 
 

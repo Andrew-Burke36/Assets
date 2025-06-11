@@ -1,16 +1,36 @@
+using NUnit.Framework;
+using NUnit.Framework.Constraints;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class NewMonoBehaviourScript1 : MonoBehaviour
+public class PlayerInventory : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    public static PlayerInventory Instance;
+
+    public List<AllCollectables> InventoryItems = new List<AllCollectables>(); // Players inventory to store items
+
+    private void Awake()
     {
-        
+        Instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void AddItem(AllCollectables item)
     {
-        
+        if (!InventoryItems.Contains(item)) // Checks if the item is in the inventory already
+        {
+            InventoryItems.Add(item); // Adds the item to the inventory if not already present
+
+        }
+    } 
+
+    
+
+    public enum AllCollectables // all my collectables
+    {
+        Coins,
+        MatchaBalls,
+        KeyCard
     }
 }

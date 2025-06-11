@@ -1,30 +1,38 @@
 using UnityEngine;
 
 public class DoorBehaviour : MonoBehaviour
-{   
+{
     // Initial door variables
-    private bool isOpen = false;
+    [SerializeField] PlayerInventory.AllCollectables RequiredItem;
+
+
+    private bool isDoorOpen = false;
+
     [SerializeField]
     AudioSource doorAudioSource;
 
     public void Toggle()
     {
-        if (!isOpen)
+        if (HasKey(RequiredItem))
         {
-            Open();
-            doorAudioSource.Play();
-        }
-        else
-        {
-            Close();
-        }
+            if (!isDoorOpen)
+            {
+                Open();
+                doorAudioSource.Play();
+            }
+
+            else
+            {
+                Close();
+            }
+        } 
     }
     public void Open() {
 
         Vector3 doorRotation = transform.eulerAngles;
         doorRotation.y -= 90f;
         transform.eulerAngles = doorRotation;
-        isOpen = true;
+        isDoorOpen = true;
     }
 
     public void Close()
@@ -32,7 +40,20 @@ public class DoorBehaviour : MonoBehaviour
         Vector3 doorRotationclose = transform.eulerAngles;
         doorRotationclose.y += 90f;
         transform.eulerAngles = doorRotationclose;
-        isOpen = false;
+        isDoorOpen = false;
+    }
+
+    public bool HasKey(PlayerInventory.AllCollectables RequiredItem)
+    {
+        if (PlayerInventory.Instance.InventoryItems.Contains(RequiredItem))
+        {
+            return true;
+        }
+
+        else
+        {
+            return false;
+        }
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
