@@ -14,10 +14,10 @@ GameObject:
   - component: {fileID: 4270068945605683166}
   - component: {fileID: 8026116081618025885}
   - component: {fileID: 8874167321868043908}
-  - component: {fileID: 965389772432993502}
+  - component: {fileID: 3505243759276925096}
   m_Layer: 0
   m_Name: Keycard
-  m_TagString: KeyCard
+  m_TagString: Collectable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1075,7 +1075,7 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
---- !u!114 &965389772432993502
+--- !u!114 &3505243759276925096
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1084,8 +1084,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7158354220051339008}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3826c6d6cf842b345ac2e36ce3758ca6, type: 3}
+  m_Script: {fileID: 11500000, guid: 5b53ebc4cb5dda146a51d59ace0e767b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ItemType: 2
-  KeyCollectAudio: {fileID: 8300000, guid: 9adef5e84d207aa408a8bcee2f0fd8f0, type: 3}
+  CollectAudio: {fileID: 8300000, guid: 9adef5e84d207aa408a8bcee2f0fd8f0, type: 3}
+  highlightMat: {fileID: 0}

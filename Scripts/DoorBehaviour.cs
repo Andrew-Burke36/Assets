@@ -9,7 +9,13 @@ public class DoorBehaviour : MonoBehaviour
     private bool isDoorOpen = false;
 
     [SerializeField]
-    AudioSource doorAudioSource;
+    AudioClip doorAudioOpen;
+
+    [SerializeField]
+    AudioClip doorAudioClose;
+
+    [SerializeField]
+    AudioClip doorAudioLocked;
 
     public void Toggle()
     {
@@ -18,14 +24,20 @@ public class DoorBehaviour : MonoBehaviour
             if (!isDoorOpen)
             {
                 Open();
-                doorAudioSource.Play();
+                AudioSource.PlayClipAtPoint(doorAudioOpen, transform.position);
             }
 
             else
             {
+                AudioSource.PlayClipAtPoint(doorAudioClose, transform.position);
                 Close();
             }
-        } 
+        }
+
+        else
+        {
+            AudioSource.PlayClipAtPoint(doorAudioLocked, transform.position);
+        }
     }
     public void Open() {
 
@@ -58,7 +70,6 @@ public class DoorBehaviour : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        doorAudioSource = GetComponent<AudioSource>();
 
     }
 

@@ -18,6 +18,9 @@ public class PlayerBehaviour : MonoBehaviour
     TextMeshProUGUI scoreText;
 
     [SerializeField]
+    TextMeshProUGUI healthText;
+
+    [SerializeField]
     public GameObject doorOverlay;
 
     [SerializeField]
@@ -25,29 +28,33 @@ public class PlayerBehaviour : MonoBehaviour
 
     float interactDistance = 2.5f;
 
-    MatchaBallBehaviour currentMatchaBall;
-    CoinBehaviour currentCoin;
     DoorBehaviour currentDoor;
-    KeyBehaviour currentKey;
+    CollectableBehaviour currentCollectable;
 
+    // Player score
     int currentScore = 0;
 
+    // Allows the player to interact with objects
     bool canInteract = false;
 
+    // Lifetime of the projectile
     private float lifetime = 2f;
 
+    // Player Health system
+
+    // Allows the player to interact with objects
     void OnInteract()
     {
         // Interact with the object
         if (canInteract)
         {
-            // Interacting with coins in the game
-            if (currentCoin != null)
+            // Interacting with collectables in the game
+            if (currentCollectable != null)
             {
                 Debug.Log("Collecting..");
-                currentCoin.CollectCoin(this);
+                currentCollectable.Collect(this);
                 canInteract = false;
-                currentCoin = null;
+                currentCollectable = null;
             }
 
             // Interacting with doors in the game
@@ -56,24 +63,13 @@ public class PlayerBehaviour : MonoBehaviour
                 Debug.Log("Player is interacting with the door");
                 currentDoor.Toggle();
             }
-
-            // Interacting with the matcha ball in the game
-            else if (currentMatchaBall != null)
-            {
-                Debug.Log("Player is interacting with the matcha ball");
-                currentMatchaBall.CollectMatcha(this);
-                canInteract = false;
-                currentMatchaBall = null;
-            }
-
-            else if (currentKey != null)
-            {
-                Debug.Log("Player is interacting with the keycard");
-                currentKey.CollectKey(this);
-                canInteract = false;
-                currentKey = null;
-            }
         }
+    }
+
+    public void HealthModify(int amount)
+    {
+        int currentHealth = GameManager.gameManager.playerHealth.Health;
+        healthText.text = "Health " + currentHealth.ToString() + " / " + GameManager.gameManager.playerHealth.MaxHealth.ToString();
     }
 
     // Modifys the player's score when they collect a collectable
@@ -122,74 +118,43 @@ public class PlayerBehaviour : MonoBehaviour
         canInteract = false;
 
         // Cleanup existing highlights and overlays
-        if (currentCoin != null)
+        if (currentCollectable != null)
         {
-            currentCoin.Unhighlight();
-            currentCoin = null;
-        }
-
-        if (currentMatchaBall != null)
-        {
-            currentMatchaBall.Unhighlight();
-            currentMatchaBall = null;
+            currentCollectable.Unhighlight();
+            currentCollectable = null;
         }
 
         if (currentDoor != null)
         {
             currentDoor = null;
         }
-
-        if (currentKey != null)
-        {
-            currentKey = null;
-        }
-
         collectableOverlay.SetActive(false);
         doorOverlay.SetActive(false);
 
+
+        // Raycast checking to see if the raycast hits anything
         if (hitSomething)
         {
             GameObject hitObj = hitInfo.collider.gameObject;
 
-            if (hitObj.CompareTag("Coin"))
+            if (hitObj.CompareTag("Collectable"))
             {
-                currentCoin = hitObj.GetComponent<CoinBehaviour>();
-                if (currentCoin != null)
+                currentCollectable= hitObj.GetComponent<CollectableBehaviour>();
+                if (currentCollectable != null)
                 {
-                    currentCoin.Highlight();
+                    currentCollectable.Highlight();
                     collectableOverlay.SetActive(true);
                     canInteract = true;
                 }
             }
-            else if (hitObj.CompareTag("matcha"))
-            {
-                currentMatchaBall = hitObj.GetComponent<MatchaBallBehaviour>();
-                if (currentMatchaBall != null)
-                {
-                    currentMatchaBall.Highlight();
-                    collectableOverlay.SetActive(true);
-                    canInteract = true;
-                }
-            }
-            else if (hitObj.CompareTag("KeycardDoor"))
-            {
-                currentDoor = hitObj.GetComponent<DoorBehaviour>();
-                if (currentDoor != null)
-                {
-                    doorOverlay.SetActive(true);
-                    canInteract = true;
-                }
-            }
-
             else
             {
-                 if (hitObj.CompareTag("KeyCard"))
+                 if (hitObj.CompareTag("KeycardDoor"))
                 {
-                    currentKey = hitObj.GetComponent<KeyBehaviour>();
-                     if (currentKey != null)
-                     {
-                         collectableOverlay.SetActive(true);
-                         canInteract = true;
+                    currentDoor = hitObj.GetComponent<DoorBehaviour>();
+                    if (currentDoor != null) {
+                        doorOverlay.SetActive(true);
+                        canInteract = true;
                     }
                 }
             }

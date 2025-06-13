@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 4687280799559617027}
   - component: {fileID: 8146109495157165436}
   - component: {fileID: 3307596511452099757}
-  - component: {fileID: 2462508910292288410}
+  - component: {fileID: 683154626595126060}
   m_Layer: 0
   m_Name: giftcoin
-  m_TagString: Coin
+  m_TagString: Collectable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -137,7 +137,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2462508910292288410
+--- !u!114 &683154626595126060
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -146,8 +146,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 8112597760290332055}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47dc715163a6f6f438d077d23e0b461c, type: 3}
+  m_Script: {fileID: 11500000, guid: 5b53ebc4cb5dda146a51d59ace0e767b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinCollectAudio: {fileID: 8300000, guid: 9adef5e84d207aa408a8bcee2f0fd8f0, type: 3}
+  CollectAudio: {fileID: 8300000, guid: 9adef5e84d207aa408a8bcee2f0fd8f0, type: 3}
   highlightMat: {fileID: 2100000, guid: e5e208fa4de618b41840b866ede4663f, type: 2}
