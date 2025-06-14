@@ -32,6 +32,8 @@ public class PlayerInventory : MonoBehaviour
         Coins,
         MatchaBalls,
         KeyCard,
+        RedKeyCard,
+        MasterKey,
         GasMask,
         None // This is used to check if the player has no items in their inventory or for hazard behaviours that require no items
     }
