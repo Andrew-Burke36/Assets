@@ -1,3 +1,10 @@
+/*
+ * Author : Andrew John
+ * Date of Creation : 13th June 2025
+ * Script Function : HazardBehaviour script that handles player interactions with hazards, including damage over time and audio feedback.
+ */
+
+
 using System.Collections;
 using UnityEngine;
 
@@ -12,6 +19,7 @@ public class HazardBehaviour : MonoBehaviour
     [SerializeField]
     AudioClip damageAudio;
 
+
     private Coroutine damageRoutine;
 
 
@@ -23,9 +31,12 @@ public class HazardBehaviour : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             damageRoutine = StartCoroutine(DealDamageOverTime(other));
-            
-            // Play audio sound
-            AudioSource.PlayClipAtPoint(waterSplashAudio, other.transform.position);
+
+            if (gameObject.CompareTag("ElectricWater"))
+            {
+                // Play water splash sound
+                AudioSource.PlayClipAtPoint(waterSplashAudio, other.transform.position);
+            }
         }
     }
 
@@ -48,10 +59,16 @@ public class HazardBehaviour : MonoBehaviour
 
         while (true)
         {
+            // stop damaging plaer if they are not in the trigger collider
+            if (player == null || !GetComponent<Collider>().bounds.Intersects(player.bounds))
+            {
+                yield break; // Exit the coroutine if the player is not in the trigger collider
+            }
+
             if ( Inventory.InventoryItems.Contains(RequiredItem))
             {
                 // If the player does not have the required item, break out of the loop
-                yield break;
+                yield break; 
             }
 
             // Assuming the player has a method to take damage

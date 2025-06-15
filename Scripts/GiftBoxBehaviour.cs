@@ -1,3 +1,10 @@
+/*
+ * Author : Andrew John
+ * Date of Creation : 7th June 2025
+ * Script Function : GiftBoxBehaviour script that handles the interaction with gift boxes, spawning gifts when hit by a bullet.
+ */
+
+
 using UnityEngine;
 
 public class GiftBoxBehaviour : MonoBehaviour

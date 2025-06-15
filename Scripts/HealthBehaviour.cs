@@ -1,3 +1,10 @@
+/*
+ * Author : Andrew John
+ * Date of Creation : 13th June 2025
+ * Script Function : HealthBehaviour script that manages player health, including taking damage and healing.
+ */
+
+
 using UnityEngine;
 
 public class HealthBehaviour

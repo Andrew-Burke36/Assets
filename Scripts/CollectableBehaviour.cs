@@ -1,3 +1,9 @@
+/*
+ * Author : Andrew John
+ * Date of Creation : 7th June 2025
+ * Script Function : CollectableBehaviour script that handles the collection of items in the game, including audio feedback and visual effects.
+ */
+
 using UnityEngine;
 
 public class CollectableBehaviour : MonoBehaviour

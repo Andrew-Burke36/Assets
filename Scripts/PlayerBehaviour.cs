@@ -1,3 +1,10 @@
+/*
+ * Author : Andrew John
+ * Date of Creation : 6th June 2025
+ * Script Function : PlayerBehaviour script that handles player interactions, projectile firing, and score management.
+ */
+
+
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 using TMPro;
@@ -32,7 +39,7 @@ public class PlayerBehaviour : MonoBehaviour
     CollectableBehaviour currentCollectable;
 
     // Player score
-    int currentScore = 0;
+    public int currentScore = 0;
 
     // Allows the player to interact with objects
     bool canInteract = false;
@@ -40,7 +47,6 @@ public class PlayerBehaviour : MonoBehaviour
     // Lifetime of the projectile
     private float lifetime = 2f;
 
-    // Player Health system
 
     // Allows the player to interact with objects
     void OnInteract()
@@ -70,6 +76,53 @@ public class PlayerBehaviour : MonoBehaviour
     {
         int currentHealth = GameManager.gameManager.playerHealth.Health;
         healthText.text = "Health " + currentHealth.ToString() + " / " + GameManager.gameManager.playerHealth.MaxHealth.ToString();
+    
+        if ( currentHealth == 0 )
+        {
+            Respawn();
+        }
+    }
+
+    private void Respawn()
+    {
+        // Audio cue
+        
+        // Respawn point
+        Vector3 respawnPoint = GameManager.gameManager.respawnPointTransform;
+
+        // Disables the players character controller to prevent physics issues during teleportation
+        CharacterController cc = GetComponent<CharacterController>();
+        if (cc != null)
+        {
+            cc.enabled = false;
+            transform.position = respawnPoint;
+            cc.enabled = true;
+        }
+        else
+        {
+            transform.position = respawnPoint;
+        }
+
+        // Resets the players collider so they wont get hurt by the previous environment
+        Collider playerCollider = GetComponent<Collider>();
+        if (playerCollider != null)
+        {
+            playerCollider.enabled = false;
+            Invoke(nameof(EnablePlayerCollider), 0.5f); // Re-enable after 0.5 seconds
+        }
+
+        // Resets the players health
+        GameManager.gameManager.playerHealth.Health = GameManager.gameManager.playerHealth.MaxHealth;
+        healthText.text = "Health " + GameManager.gameManager.playerHealth.Health.ToString() + " / " + GameManager.gameManager.playerHealth.MaxHealth.ToString();
+    }
+
+    private void EnablePlayerCollider()
+    {
+        Collider playerCollider = GetComponent<Collider>();
+        if (playerCollider != null)
+        {
+            playerCollider.enabled = true;
+        }
     }
 
     // Modifys the player's score when they collect a collectable
@@ -98,11 +151,6 @@ public class PlayerBehaviour : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        scoreText.text = "COLLECTIBLES: " + currentScore.ToString() + " / 20";
-
-        // Sets the door and collectable overlay to inactive at the start of the game
-        doorOverlay.SetActive(false);
-        collectableOverlay.SetActive(false);
     }
 
     // Update is called once per frame

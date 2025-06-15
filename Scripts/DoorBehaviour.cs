@@ -1,3 +1,9 @@
+/*
+ * Author : Andrew John
+ * Date of Creation : 11th June 2025
+ * Script Function : DoorBehaviour script that handles door interactions, including opening, closing, and checking for required items to unlock doors.
+ */
+
 using UnityEngine;
 
 public class DoorBehaviour : MonoBehaviour
@@ -5,6 +11,7 @@ public class DoorBehaviour : MonoBehaviour
     // Initial door variables
     [SerializeField] PlayerInventory.AllCollectables RequiredItem;
 
+    private Coroutine autoCloseCoroutine;
 
     private bool isDoorOpen = false;
 
@@ -17,14 +24,44 @@ public class DoorBehaviour : MonoBehaviour
     [SerializeField]
     AudioClip doorAudioLocked;
 
+    [SerializeField]
+    private bool isExitDoor = false; // Used to determine if the door is an exit door
+
     public void Toggle()
     {
+        // Exit door logic
+        if (isExitDoor)
+        {
+            // Checks if the player has 20 collectables first
+            PlayerBehaviour player = FindFirstObjectByType<PlayerBehaviour>();
+
+            if (player != null && player.currentScore >= 20)
+            {
+                GameManager.gameManager.ShowsCongratsUI();
+                return; // Exit door logic ends
+            }
+
+            else
+            {
+                AudioSource.PlayClipAtPoint(doorAudioLocked, transform.position);
+                return; // Exit door logic ends
+            }
+        }
+
         if (HasKey(RequiredItem))
         {
             if (!isDoorOpen)
             {
+                
                 Open();
                 AudioSource.PlayClipAtPoint(doorAudioOpen, transform.position);
+
+                // Closes the door after 4 seconds if it is open
+                if (autoCloseCoroutine != null)
+                {
+                    StopCoroutine(autoCloseCoroutine);
+                }
+                    autoCloseCoroutine = StartCoroutine(AutoCloseDoor());
             }
 
             else
@@ -53,6 +90,25 @@ public class DoorBehaviour : MonoBehaviour
         doorRotationclose.y += 90f;
         transform.eulerAngles = doorRotationclose;
         isDoorOpen = false;
+
+        // Stops the coroutine if the door was manually clsoed
+        if (autoCloseCoroutine != null )
+        {
+            StopCoroutine(autoCloseCoroutine);
+            autoCloseCoroutine = null;
+        }
+    }
+
+    // Defines the duration of time for the auto close coroutine
+    private System.Collections.IEnumerator AutoCloseDoor()
+    {
+        yield return new WaitForSeconds(4f);
+        
+        if (isDoorOpen)
+        {
+            AudioSource.PlayClipAtPoint(doorAudioClose, transform.position);
+            Close();
+        }
     }
 
     public bool HasKey(PlayerInventory.AllCollectables RequiredItem)

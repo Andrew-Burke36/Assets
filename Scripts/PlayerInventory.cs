@@ -1,3 +1,11 @@
+/*
+ * Author : Andrew John
+ * Date of Creation : 13th June 2025
+ * Script Function : Playerbehaviour script that handles when the player collects items throughout the game.
+ */
+
+
+
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 using System.Collections;
